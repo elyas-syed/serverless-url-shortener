@@ -1,0 +1,69 @@
+// AWS URL Shortener — serverless architecture
+// Open in Eraser: https://app.eraser.io — paste this file or use Eraser MCP
+// Docs: https://docs.eraser.io/docs/cloud-architecture-diagrams
+
+direction down
+colorMode pastel
+styleMode shadow
+typeface clean
+
+title AWS URL Shortener (elyas.click) [typeface: clean]
+
+Users [icon: users, label: "Browser / API client"]
+
+AWS [icon: aws-cloud] {
+  Edge [color: blue] {
+    CloudFront [icon: aws-cloudfront]
+    Route53 [icon: aws-route-53]
+    ACM [icon: aws-certificate-manager]
+  }
+
+  Frontend [color: green] {
+    S3Web [icon: aws-simple-storage-service, label: "S3 frontend"]
+  }
+
+  API [color: orange] {
+    APIGateway [icon: aws-api-gateway, label: "API Gateway HTTP API"]
+  }
+
+  Lambda [color: orange] {
+    CreateLink [icon: aws-lambda, label: create_link]
+    Redirect [icon: aws-lambda, label: redirect]
+    GetAnalytics [icon: aws-lambda, label: get_analytics]
+    ClickTracker [icon: aws-lambda, label: click_tracker]
+  }
+
+  Data [color: purple] {
+    Links [icon: aws-dynamodb, label: links table]
+    RateLimits [icon: aws-dynamodb, label: rate_limits table]
+    ClickQueue [icon: aws-simple-queue-service, label: click_events]
+    DLQ [icon: aws-simple-queue-service, label: DLQ]
+  }
+}
+
+Users > CloudFront
+Route53 > CloudFront
+ACM > CloudFront
+
+CloudFront > S3Web: "/, /assets/*, /index.html"
+CloudFront > APIGateway: "/api/*, /health, /{slug}"
+
+APIGateway > CreateLink: POST /api/links
+APIGateway > Redirect: GET|HEAD /{slug}
+APIGateway > GetAnalytics: GET|DELETE /api/links/{slug}
+
+CreateLink > Links
+CreateLink > RateLimits
+Redirect > Links
+Redirect > ClickQueue: enqueue click
+GetAnalytics > Links
+
+ClickQueue > ClickTracker
+ClickTracker > Links
+ClickQueue --> DLQ: max 3 retries
+
+legend [position: bottom-left] {
+  [connection: -->, label: Async / DLQ path]
+  [icon: aws-cloudfront, label: Single public entry]
+  [icon: aws-lambda, label: Python 3.12 Lambdas]
+}
