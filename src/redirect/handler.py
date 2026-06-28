@@ -4,9 +4,8 @@ from typing import Any
 
 import boto3
 
-from shared.config import auth_mode, get_env
+from shared.config import get_env
 from shared.responses import error_response, json_response, redirect_response
-
 
 dynamodb = boto3.resource("dynamodb")
 sqs = boto3.client("sqs")

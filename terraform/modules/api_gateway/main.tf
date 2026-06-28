@@ -58,6 +58,12 @@ resource "aws_apigatewayv2_route" "redirect" {
   target    = "integrations/${aws_apigatewayv2_integration.redirect.id}"
 }
 
+resource "aws_apigatewayv2_route" "redirect_head" {
+  api_id    = aws_apigatewayv2_api.this.id
+  route_key = "HEAD /{slug}"
+  target    = "integrations/${aws_apigatewayv2_integration.redirect.id}"
+}
+
 resource "aws_apigatewayv2_stage" "this" {
   api_id      = aws_apigatewayv2_api.this.id
   name        = var.stage_name
@@ -75,6 +81,7 @@ resource "aws_apigatewayv2_stage" "this" {
     aws_apigatewayv2_route.delete_link,
     aws_apigatewayv2_route.health,
     aws_apigatewayv2_route.redirect,
+    aws_apigatewayv2_route.redirect_head,
   ]
 }
 
