@@ -1,11 +1,27 @@
 # AWS URL Shortener
 
-Production-style serverless URL shortener on AWS using Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and a static S3 frontend.
+**Short links. Zero servers. Built on AWS.**
+
+A deployable Production grade serverless URL shortener with a web UI, REST API, click analytics, and link expiration with no servers to manage. 
+
+Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, production-ready and ~$1–2/month at demo scale.
+
+**Full Documentation** — architecture, API reference, deployment, and more — is in **[`docs/`](docs/)** ([index](docs/README.md)).
+
+<details>
+<summary><strong>View web UI screenshot</strong> · <a href="https://elyas.click">elyas.click</a></summary>
+<br>
+<p align="center">
+  <a href="https://elyas.click">
+    <img src="assets/images/web-ui.jpg" alt="elyas.click URL shortener — shorten a link and view click stats" width="560">
+  </a>
+</p>
+</details>
 
 ## Features
 
 - Shorten URLs via web UI or REST API
-- Custom slugs and link expiration (DynamoDB TTL)
+- Custom slugs and link expiration (default **3 days**, DynamoDB TTL)
 - Async click analytics via SQS
 - Demo mode: open create API with 5 requests/min/IP rate limit
 - Upgrade path to API key auth via `auth_mode` variable
@@ -17,6 +33,8 @@ Browser → CloudFront → S3 (landing page)
                      → API Gateway → Lambda → DynamoDB / SQS
                      → Lambda (redirects)
 ```
+
+For request flows, data model, CloudFront routing, and design rationale, see [docs/architecture.md](docs/architecture.md).
 
 ## Prerequisites
 
@@ -62,7 +80,7 @@ terraform plan
 terraform apply
 ```
 
-Note the `app_url` output — that is your public shortener URL.
+Note the `app_url` output — that is your public shortener URL. See [docs/deployment.md](docs/deployment.md) for custom domain setup, updates, and CloudFront invalidation.
 
 ### 4. Demo
 
@@ -81,10 +99,12 @@ chmod +x scripts/demo.sh
 |--------|------|-------------|
 | POST | `/api/links` | Create a short link |
 | GET | `/api/links/{slug}` | Link metadata and click count |
+| DELETE | `/api/links/{slug}` | Soft-delete (requires `api_key` auth) |
 | GET | `/{slug}` | Redirect to long URL |
+| HEAD | `/{slug}` | Redirect headers only |
 | GET | `/health` | Health check |
 
-Create example:
+Full request/response schemas, validation rules, and error codes: [docs/api.md](docs/api.md).
 
 ```bash
 curl -X POST "$APP_URL/api/links" \
@@ -92,19 +112,13 @@ curl -X POST "$APP_URL/api/links" \
   -d '{"url":"https://example.com","slug":"demo"}'
 ```
 
-## Estimated monthly cost (demo traffic)
+## Cost
 
-~**$1–2/month** without WAF or custom domain overhead beyond Route53 ($0.50/zone if needed).
+~**$1–2/month** at demo traffic. Breakdown and scaling factors: [docs/cost.md](docs/cost.md).
 
-## Switching to API key auth
+## API key auth
 
-Set in `terraform.tfvars`:
-
-```hcl
-auth_mode = "api_key"
-```
-
-Then apply. (Usage plan wiring is prepared for a follow-up PR.)
+Set `auth_mode = "api_key"` in `terraform.tfvars` and apply. Usage plan wiring is planned — see [docs/security.md](docs/security.md) and [docs/roadmap.md](docs/roadmap.md).
 
 ## Project layout
 
@@ -112,18 +126,15 @@ Then apply. (Usage plan wiring is prepared for a follow-up PR.)
 terraform/          Root stack and modules
 src/                Python Lambda handlers
 web/                Static frontend
-docs/               Architecture, API, deployment, and operations guides
+docs/               Detailed guides (architecture, API, deployment, …)
+assets/images/      README screenshots and visuals
 tests/              Unit tests
 scripts/demo.sh     End-to-end demo script
 ```
 
-## Documentation
-
-See [docs/](docs/) for architecture, API reference, deployment runbook, security notes, and more.
-
 ## Contributing
 
-Use feature branches and pull requests:
+Feature branches and pull requests. Full dev workflow: [docs/development.md](docs/development.md).
 
 ```bash
 git checkout -b feat/my-change
