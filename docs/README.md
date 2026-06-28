@@ -15,11 +15,4 @@ Project documentation for the AWS serverless URL shortener. The [README](../READ
 | [Development](development.md) | Local build, test, and contribution workflow |
 | [Cost](cost.md) | Estimated monthly spend and scaling factors |
 | [Roadmap](roadmap.md) | Planned features and known gaps |
-
-## Architecture decisions
-
-| ADR | Title |
-|-----|-------|
-| [001](decisions/001-s3-lockfile-over-dynamodb-lock.md) | S3 native lockfile over DynamoDB state locking |
-| [002](decisions/002-cloudfront-single-entry.md) | CloudFront as single public entry point |
-| [003](decisions/003-async-click-tracking-via-sqs.md) | Async click tracking via SQS |
+| [Architecture decisions](decisions/README.md) | ADRs: lockfile, CloudFront routing, SQS clicks |
