@@ -1,0 +1,14 @@
+aws_region            = "us-east-1"
+project_name          = "url-shortener"
+auth_mode             = "open"
+rate_limit_per_minute = 5
+default_link_ttl_days = 7
+
+# Optional custom domain (leave empty to use CloudFront default domain).
+domain_name    = ""
+hosted_zone_id = ""
+
+tags = {
+  Project = "url-shortener"
+  Managed = "terraform"
+}
