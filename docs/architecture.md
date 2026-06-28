@@ -4,14 +4,6 @@
 
 The URL shortener is a single-environment, serverless application on AWS. CloudFront is the only public entry point. It routes traffic to either a static S3 frontend or API Gateway, which invokes Python Lambdas backed by DynamoDB and SQS.
 
-<details>
-<summary><strong>View architecture diagram</strong></summary>
-<br>
-<p align="center">
-  <img src="../assets/images/architecture.png" alt="AWS URL Shortener serverless architecture diagram" width="900">
-</p>
-</details>
-
 ```mermaid
 flowchart TB
     Browser[Browser or API client]
