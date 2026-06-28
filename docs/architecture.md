@@ -136,36 +136,26 @@ Remote Terraform state lives in a separate bootstrap stack under `terraform/boot
 
 ## Design notes
 
-Key architectural choices and trade-offs.
+Key architectural choices and trade-offs:
 
-### S3 native lockfile over DynamoDB state locking
+- **S3 native lockfile over DynamoDB state locking**
+  - Terraform 1.10+ supports `use_lockfile = true` on the S3 backend instead of a DynamoDB lock table
+  - Bootstrap provisions a versioned, encrypted state bucket with a 90-day lifecycle rule for old versions
+  - **Why:** One fewer resource to manage; locking stays with state storage
+  - **Trade-off:** Requires Terraform >= 1.10 across the team
+  - See [Terraform S3 backend lockfile](https://developer.hashicorp.com/terraform/language/backend/s3), `terraform/bootstrap/main.tf`
 
-Terraform 1.10+ supports S3 native lockfiles (`use_lockfile = true`) instead of a DynamoDB lock table. The bootstrap stack uses this approach: a versioned, encrypted state bucket with a 90-day lifecycle rule for old versions.
+- **CloudFront as single public entry point**
+  - Alternatives: separate CloudFront distributions, or API Gateway URL exposed directly
+  - Chosen approach: one distribution, two origins (S3 + API Gateway), path-based cache behaviors
+  - **Why:** One URL for users, one TLS cert, short links at `/{slug}`
+  - **Trade-off:** Cache behavior order matters; frontend deploys need CloudFront invalidation
+  - See `terraform/modules/cloudfront/main.tf`, [CloudFront routing](#cloudfront-routing)
 
-**Why:** One fewer resource to manage and pay for; locking stays with state storage.
-
-**Trade-off:** Requires Terraform >= 1.10 across the team.
-
-See [Terraform S3 backend lockfile](https://developer.hashicorp.com/terraform/language/backend/s3), `terraform/bootstrap/main.tf`.
-
-### CloudFront as single public entry point
-
-The app serves both a static UI and a dynamic API. Alternatives considered were separate CloudFront distributions or exposing API Gateway directly. We use one distribution with two origins (S3 + API Gateway) and path-based cache behaviors.
-
-**Why:** One URL for users (`https://short.example/demo`), one TLS cert, and short links at `/{slug}`.
-
-**Trade-off:** Cache behavior order matters — `/api/*` and static paths must be evaluated before the `/*` redirect catch-all. Frontend deploys need CloudFront invalidation.
-
-See `terraform/modules/cloudfront/main.tf` and [CloudFront routing](#cloudfront-routing) above.
-
-### Async click tracking via SQS
-
-Each redirect could increment `click_count` synchronously in the redirect Lambda, via a queue, or only in logs. We enqueue to SQS; `click_tracker` consumes batches and updates DynamoDB (DLQ after 3 failures, batch size 10).
-
-**Why:** Redirect latency is not blocked by DynamoDB writes; spikes get natural backpressure.
-
-**Trade-off:** Click counts are eventually consistent (usually sub-second); extra SQS + consumer Lambda to operate.
-
-Synchronous updates were rejected because redirect speed is the primary user-facing path.
-
-See `src/redirect/handler.py`, `src/click_tracker/handler.py`, `terraform/modules/sqs/main.tf`.
+- **Async click tracking via SQS**
+  - Alternatives: synchronous DynamoDB update in redirect Lambda, or analytics via logs only
+  - Chosen approach: redirect enqueues to SQS; `click_tracker` updates DynamoDB in batches (DLQ after 3 failures, batch size 10)
+  - **Why:** Redirect latency not blocked by writes; natural backpressure under spikes
+  - **Trade-off:** Click counts are eventually consistent; extra SQS + consumer Lambda to operate
+  - Synchronous updates rejected — redirect speed is the primary user-facing path
+  - See `src/redirect/handler.py`, `src/click_tracker/handler.py`, `terraform/modules/sqs/main.tf`
