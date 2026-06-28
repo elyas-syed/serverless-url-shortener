@@ -20,7 +20,9 @@ resource "aws_s3_bucket" "terraform_state" {
     prevent_destroy = true
   }
 
-  tags = var.tags
+  tags = merge(var.tags, {
+    Name = var.state_bucket_name
+  })
 }
 
 resource "aws_s3_bucket_versioning" "terraform_state" {
@@ -50,3 +52,17 @@ resource "aws_s3_bucket_public_access_block" "terraform_state" {
   restrict_public_buckets = true
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "terraform_state" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  rule {
+    id     = "expire-old-state-versions"
+    status = "Enabled"
+
+    filter {}
+
+    noncurrent_version_expiration {
+      noncurrent_days = 90
+    }
+  }
+}

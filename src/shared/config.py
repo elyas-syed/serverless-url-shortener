@@ -19,4 +19,4 @@ def rate_limit_per_minute() -> int:
 
 
 def default_link_ttl_days() -> int:
-    return int(os.environ.get("DEFAULT_LINK_TTL_DAYS", "7"))
+    return int(os.environ.get("DEFAULT_LINK_TTL_DAYS", "3"))

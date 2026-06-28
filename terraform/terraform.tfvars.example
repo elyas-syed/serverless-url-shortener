@@ -2,7 +2,7 @@ aws_region            = "us-east-1"
 project_name          = "url-shortener"
 auth_mode             = "open"
 rate_limit_per_minute = 5
-default_link_ttl_days = 7
+default_link_ttl_days = 3
 
 # Optional custom domain (leave empty to use CloudFront default domain).
 domain_name    = ""
