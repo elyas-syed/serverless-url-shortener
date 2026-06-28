@@ -11,10 +11,19 @@ const submitBtn = document.getElementById("submit-btn");
 const btnLabel = submitBtn.querySelector(".btn-label");
 const btnSpinner = submitBtn.querySelector(".btn-spinner");
 const slugPrefix = document.getElementById("slug-prefix");
+const urlInput = document.getElementById("url");
 
 let currentSlug = null;
 
 slugPrefix.textContent = `${window.location.host}/`;
+
+function scrollUrlToStart() {
+  urlInput.scrollLeft = 0;
+}
+
+urlInput.addEventListener("paste", () => {
+  requestAnimationFrame(scrollUrlToStart);
+});
 
 function showError(message) {
   errorBox.textContent = message;
