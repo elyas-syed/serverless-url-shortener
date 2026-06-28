@@ -21,7 +21,7 @@ Browser → CloudFront → S3 (landing page)
 ## Prerequisites
 
 - AWS account with credentials configured
-- Terraform >= 1.5
+- Terraform >= 1.10 (required for S3 native state lockfile)
 - Python 3.12+
 - `make`, `zip`
 
@@ -39,7 +39,7 @@ terraform init
 terraform apply
 ```
 
-Copy backend settings into `terraform/versions.tf`, then:
+Copy the `backend_config` output into the `backend "s3"` block in `terraform/versions.tf` (uses `use_lockfile = true` instead of DynamoDB), then:
 
 ```bash
 cd ../
@@ -116,7 +116,13 @@ tests/              Unit tests
 scripts/demo.sh     End-to-end demo script
 ```
 
-## Pull requests
+## Contributing
 
-- `feat/data-layer` — DynamoDB + SQS modules
-- `feat/lambda-and-api` — Lambda handlers, API Gateway, CloudFront, frontend
+Use feature branches and pull requests:
+
+```bash
+git checkout -b feat/my-change
+# ... make changes, commit ...
+git push -u origin feat/my-change
+gh pr create --base main --head feat/my-change
+```

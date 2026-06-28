@@ -9,12 +9,6 @@ variable "state_bucket_name" {
   type        = string
 }
 
-variable "lock_table_name" {
-  description = "DynamoDB table name for Terraform state locking."
-  type        = string
-  default     = "url-shortener-terraform-locks"
-}
-
 variable "tags" {
   description = "Tags applied to bootstrap resources."
   type        = map(string)

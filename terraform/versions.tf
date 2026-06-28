@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.10.0"
 
   required_providers {
     aws = {
@@ -17,7 +17,7 @@ terraform {
   #   bucket         = "your-unique-url-shortener-tf-state-bucket"
   #   key            = "url-shortener/terraform.tfstate"
   #   region         = "us-east-1"
-  #   dynamodb_table = "url-shortener-terraform-locks"
+  #   use_lockfile   = true
   #   encrypt        = true
   # }
 }
