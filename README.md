@@ -19,12 +19,10 @@ Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, pr
 </details>
 
 <details>
-<summary><strong>View architecture diagram</strong> · <a href="https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas">Eraser</a></summary>
+<summary><strong>View architecture diagram</strong></summary>
 <br>
 <p align="center">
-  <a href="https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas">
-    <img src="assets/images/architecture.png" alt="AWS URL Shortener serverless architecture — CloudFront, Lambda, DynamoDB, SQS" width="900">
-  </a>
+  <img src="assets/images/architecture.png" alt="AWS URL Shortener serverless architecture — CloudFront, Lambda, DynamoDB, SQS" width="900">
 </p>
 </details>
 
@@ -44,7 +42,7 @@ Browser → CloudFront → S3 (landing page)
                      → Lambda (redirects)
 ```
 
-High-resolution diagram (horizontal layout, blog-friendly): [`assets/images/architecture.png`](../assets/images/architecture.png) · [Edit in Eraser](https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas)
+High-resolution diagram: [`assets/images/architecture.png`](assets/images/architecture.png)
 
 For request flows, data model, CloudFront routing, and design rationale, see [docs/architecture.md](docs/architecture.md).
 
