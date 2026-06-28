@@ -14,12 +14,15 @@ links_table = dynamodb.Table(get_env("LINKS_TABLE_NAME"))
 
 
 def handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
-    path = event.get("rawPath") or event.get("path", "")
-    slug = path.strip("/")
+    slug = (event.get("pathParameters") or {}).get("slug")
+    if not slug:
+        path = event.get("rawPath") or event.get("path", "")
+        slug = path.strip("/")
 
-    if not slug or slug == "health":
-        if slug == "health":
-            return json_response(200, {"status": "ok"})
+    if slug == "health":
+        return json_response(200, {"status": "ok"})
+
+    if not slug:
         return error_response(404, "Not found.")
 
     response = links_table.get_item(Key={"slug": slug})
