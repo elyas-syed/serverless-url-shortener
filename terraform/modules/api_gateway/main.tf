@@ -69,11 +69,13 @@ resource "aws_apigatewayv2_stage" "this" {
     throttling_burst_limit = var.throttle_burst_limit
   }
 
-  route_settings {
-    route_key              = "POST /api/links"
-    throttling_rate_limit  = var.throttle_rate_limit
-    throttling_burst_limit = var.throttle_burst_limit
-  }
+  depends_on = [
+    aws_apigatewayv2_route.create_link,
+    aws_apigatewayv2_route.get_analytics,
+    aws_apigatewayv2_route.delete_link,
+    aws_apigatewayv2_route.health,
+    aws_apigatewayv2_route.redirect,
+  ]
 }
 
 resource "aws_lambda_permission" "create_link" {
