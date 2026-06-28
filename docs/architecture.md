@@ -11,7 +11,7 @@ An editable **Eraser architecture diagram** (AWS icons, diagram-as-code) is in [
 <br>
 <p align="center">
   <a href="https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas">
-    <img src="../assets/images/architecture.jpg" alt="AWS URL Shortener serverless architecture diagram" width="560">
+    <img src="../assets/images/architecture.png" alt="AWS URL Shortener serverless architecture diagram" width="900">
   </a>
 </p>
 </details>

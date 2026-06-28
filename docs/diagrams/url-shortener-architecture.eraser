@@ -1,8 +1,7 @@
-// AWS URL Shortener — serverless architecture
-// Open in Eraser: https://app.eraser.io — paste this file or use Eraser MCP
-// Docs: https://docs.eraser.io/docs/cloud-architecture-diagrams
+// AWS URL Shortener — serverless architecture (horizontal layout for README / blog)
+// Live: https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas
 
-direction down
+direction right
 colorMode pastel
 styleMode shadow
 typeface clean
@@ -11,46 +10,38 @@ title AWS URL Shortener (elyas.click) [typeface: clean]
 
 Users [icon: users, label: "Browser / API client"]
 
-AWS [icon: aws-cloud] {
-  Edge [color: blue] {
-    CloudFront [icon: aws-cloudfront]
-    Route53 [icon: aws-route-53]
-    ACM [icon: aws-certificate-manager]
-  }
-
-  Frontend [color: green] {
-    S3Web [icon: aws-simple-storage-service, label: "S3 frontend"]
-  }
-
-  API [color: orange] {
-    APIGateway [icon: aws-api-gateway, label: "API Gateway HTTP API"]
-  }
-
-  Lambda [color: orange] {
-    CreateLink [icon: aws-lambda, label: create_link]
-    Redirect [icon: aws-lambda, label: redirect]
-    GetAnalytics [icon: aws-lambda, label: get_analytics]
-    ClickTracker [icon: aws-lambda, label: click_tracker]
-  }
-
-  Data [color: purple] {
-    Links [icon: aws-dynamodb, label: links table]
-    RateLimits [icon: aws-dynamodb, label: rate_limits table]
-    ClickQueue [icon: aws-simple-queue-service, label: click_events]
-    DLQ [icon: aws-simple-queue-service, label: DLQ]
-  }
+Edge [color: blue] {
+  Route53 [icon: aws-route-53]
+  ACM [icon: aws-certificate-manager]
+  CloudFront [icon: aws-cloudfront]
 }
 
-Users > CloudFront
+S3Web [icon: aws-simple-storage-service, label: "S3 frontend"]
+
+APIGateway [icon: aws-api-gateway, label: "API Gateway HTTP API"]
+
+LambdaFns [color: orange, label: Lambda] {
+  CreateLink [icon: aws-lambda, label: create_link]
+  Redirect [icon: aws-lambda, label: redirect]
+  GetAnalytics [icon: aws-lambda, label: get_analytics]
+  ClickTracker [icon: aws-lambda, label: click_tracker]
+}
+
+Data [color: purple] {
+  Links [icon: aws-dynamodb, label: links]
+  RateLimits [icon: aws-dynamodb, label: rate_limits]
+  ClickQueue [icon: aws-simple-queue-service, label: click_events]
+  DLQ [icon: aws-simple-queue-service, label: DLQ]
+}
+
 Route53 > CloudFront
 ACM > CloudFront
+Users > CloudFront
 
-CloudFront > S3Web: "/, /assets/*, /index.html"
-CloudFront > APIGateway: "/api/*, /health, /{slug}"
+CloudFront > S3Web: static assets
+CloudFront > APIGateway: API + redirects
 
-APIGateway > CreateLink: POST /api/links
-APIGateway > Redirect: GET|HEAD /{slug}
-APIGateway > GetAnalytics: GET|DELETE /api/links/{slug}
+APIGateway > CreateLink, Redirect, GetAnalytics
 
 CreateLink > Links
 CreateLink > RateLimits
@@ -60,9 +51,9 @@ GetAnalytics > Links
 
 ClickQueue > ClickTracker
 ClickTracker > Links
-ClickQueue --> DLQ: max 3 retries
+ClickQueue --> DLQ: failed messages
 
-legend [position: bottom-left] {
+legend [position: bottom-right] {
   [connection: -->, label: Async / DLQ path]
   [icon: aws-cloudfront, label: Single public entry]
   [icon: aws-lambda, label: Python 3.12 Lambdas]

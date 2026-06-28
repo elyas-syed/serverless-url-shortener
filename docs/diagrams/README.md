@@ -7,7 +7,7 @@ Architecture diagrams for this project, authored as [Eraser diagram-as-code](htt
 | File | Description |
 |------|-------------|
 | [url-shortener-architecture.eraser](url-shortener-architecture.eraser) | AWS serverless architecture (CloudFront, Lambda, DynamoDB, SQS) |
-| [Exported image](../../assets/images/architecture.jpg) | Rendered diagram for docs (from Eraser) |
+| [Exported image](../../assets/images/architecture.png) | High-res horizontal PNG for README and blog posts |
 
 ## Live diagram in Eraser
 
@@ -47,6 +47,8 @@ After adding the server:
 
 **Local server (API key):** for CI or headless use, see [Eraser MCP FAQ](https://docs.eraser.io/docs/mcp) and `@eraserlabs/eraser-mcp` on npm.
 
-## Export to README
+## Export for README and blog
 
-Exported diagram: `assets/images/architecture.jpg`. Re-export after edits via Eraser MCP (`export_diagram`) or download from the [live workspace](https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas).
+- **File:** `assets/images/architecture.png` (5239×1608, horizontal layout)
+- **Medium / blog:** upload `architecture.png` directly, or use the [raw GitHub URL](https://raw.githubusercontent.com/elyas-syed/aws-url-shortner/main/assets/images/architecture.png) after merge
+- **Re-export:** Eraser MCP `export_diagram` with `imageQuality: 3`, `theme: light`, `format: png`

@@ -18,6 +18,16 @@ Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, pr
 </p>
 </details>
 
+<details>
+<summary><strong>View architecture diagram</strong> · <a href="https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas">Eraser</a></summary>
+<br>
+<p align="center">
+  <a href="https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas">
+    <img src="assets/images/architecture.png" alt="AWS URL Shortener serverless architecture — CloudFront, Lambda, DynamoDB, SQS" width="900">
+  </a>
+</p>
+</details>
+
 ## Features
 
 - Shorten URLs via web UI or REST API
@@ -33,6 +43,8 @@ Browser → CloudFront → S3 (landing page)
                      → API Gateway → Lambda → DynamoDB / SQS
                      → Lambda (redirects)
 ```
+
+High-resolution diagram (horizontal layout, blog-friendly): [`assets/images/architecture.png`](../assets/images/architecture.png) · [Edit in Eraser](https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas)
 
 For request flows, data model, CloudFront routing, and design rationale, see [docs/architecture.md](docs/architecture.md).
 
@@ -127,7 +139,7 @@ terraform/          Root stack and modules
 src/                Python Lambda handlers
 web/                Static frontend
 docs/               Detailed guides (architecture, API, deployment, …)
-assets/images/      README screenshots and visuals
+assets/images/      Screenshots and architecture diagram (PNG)
 tests/              Unit tests
 scripts/demo.sh     End-to-end demo script
 ```
