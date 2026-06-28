@@ -27,9 +27,12 @@ LambdaFns [color: orange, label: Lambda] {
   ClickTracker [icon: aws-lambda, label: click_tracker]
 }
 
-Data [color: purple] {
-  Links [icon: aws-dynamodb, label: links]
-  RateLimits [icon: aws-dynamodb, label: rate_limits]
+DynamoDB [color: purple, label: DynamoDB] {
+  LinksTable [icon: aws-dynamodb, label: "links table"]
+  RateLimitsTable [icon: aws-dynamodb, label: "rate_limits table"]
+}
+
+SQS [color: purple, label: SQS] {
   ClickQueue [icon: aws-simple-queue-service, label: click_events]
   DLQ [icon: aws-simple-queue-service, label: DLQ]
 }
@@ -43,14 +46,14 @@ CloudFront > APIGateway: API + redirects
 
 APIGateway > CreateLink, Redirect, GetAnalytics
 
-CreateLink > Links
-CreateLink > RateLimits
-Redirect > Links
+CreateLink > LinksTable
+CreateLink > RateLimitsTable
+Redirect > LinksTable
 Redirect > ClickQueue: enqueue click
-GetAnalytics > Links
+GetAnalytics > LinksTable
 
 ClickQueue > ClickTracker
-ClickTracker > Links
+ClickTracker > LinksTable
 ClickQueue --> DLQ: failed messages
 
 legend [position: bottom-right] {
