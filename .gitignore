@@ -4,7 +4,8 @@
 *.tfstate.*
 *.tfvars
 !terraform.tfvars.example
-.terraform.lock.hcl
+# Keep lock file tracked for reproducible provider versions.
+# .terraform.lock.hcl
 crash.log
 override.tf
 override.tf.json
