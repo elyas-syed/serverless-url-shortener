@@ -8,11 +8,15 @@ Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, pr
 
 **Full Documentation** — architecture, API reference, deployment, and more — is in **[`docs/`](docs/)** ([index](docs/README.md)).
 
+<details>
+<summary><strong>View web UI screenshot</strong> · <a href="https://elyas.click">elyas.click</a></summary>
+<br>
 <p align="center">
   <a href="https://elyas.click">
     <img src="assets/images/web-ui.jpg" alt="elyas.click URL shortener — shorten a link and view click stats" width="560">
   </a>
 </p>
+</details>
 
 ## Features
 
