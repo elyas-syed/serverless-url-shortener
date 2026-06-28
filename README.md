@@ -8,6 +8,8 @@ Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, pr
 
 **Full Documentation** — architecture, API reference, deployment, and more — is in **[`docs/`](docs/)** ([index](docs/README.md)).
 
+[![elyas.click URL shortener — shorten a link and view click stats](assets/images/web-ui.png)](https://elyas.click)
+
 ## Features
 
 - Shorten URLs via web UI or REST API
@@ -117,6 +119,7 @@ terraform/          Root stack and modules
 src/                Python Lambda handlers
 web/                Static frontend
 docs/               Detailed guides (architecture, API, deployment, …)
+assets/images/      README screenshots and visuals
 tests/              Unit tests
 scripts/demo.sh     End-to-end demo script
 ```
