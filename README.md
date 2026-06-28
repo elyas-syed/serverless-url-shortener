@@ -2,9 +2,11 @@
 
 **Short links. Zero servers. Built on AWS.**
 
-A deployable serverless URL shortener with a web UI, REST API, click analytics, and link expiration — no servers to manage. Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, production-ready and ~$1–2/month at demo scale.
+A deployable Production grade serverless URL shortener with a web UI, REST API, click analytics, and link expiration with no servers to manage. 
 
-**Documentation** — architecture, API reference, deployment, and more — is in **[`docs/`](docs/)** ([index](docs/README.md)).
+Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, production-ready and ~$1–2/month at demo scale.
+
+**Full Documentation** — architecture, API reference, deployment, and more — is in **[`docs/`](docs/)** ([index](docs/README.md)).
 
 ## Features
 
