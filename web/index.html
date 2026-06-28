@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="/assets/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>URL Shortener</h1>
+        <p>Paste a long URL and get a short link instantly.</p>
+      </header>
+
+      <form id="shorten-form">
+        <label for="url">Long URL</label>
+        <input id="url" name="url" type="url" placeholder="https://example.com/very/long/path" required />
+
+        <label for="slug">Custom slug (optional)</label>
+        <input id="slug" name="slug" type="text" placeholder="my-link" pattern="[A-Za-z0-9_-]{3,32}" />
+
+        <button type="submit">Shorten</button>
+      </form>
+
+      <section id="result" class="hidden">
+        <h2>Your short link</h2>
+        <div class="result-row">
+          <a id="short-url" href="#" target="_blank" rel="noopener noreferrer"></a>
+          <button id="copy-btn" type="button">Copy</button>
+        </div>
+        <p id="meta"></p>
+        <button id="refresh-stats" type="button">Refresh click count</button>
+      </section>
+
+      <p id="error" class="error hidden"></p>
+    </main>
+
+    <script src="/assets/app.js"></script>
+  </body>
+</html>
