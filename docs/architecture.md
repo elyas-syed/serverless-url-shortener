@@ -132,4 +132,40 @@ The catch-all `/*` behavior must come after static paths so `/api/links` and `/a
 
 ## Bootstrap stack
 
-Remote Terraform state lives in a separate bootstrap stack under `terraform/bootstrap/`. It provisions an encrypted, versioned S3 bucket with native lockfile support (`use_lockfile = true`). See [Deployment](deployment.md) and [ADR 001](architecture-decisions.md#adr-001-s3-native-lockfile-over-dynamodb-state-locking).
+Remote Terraform state lives in a separate bootstrap stack under `terraform/bootstrap/`. It provisions an encrypted, versioned S3 bucket with native lockfile support (`use_lockfile = true`). See [Deployment](deployment.md) for setup steps.
+
+## Design notes
+
+Key architectural choices and trade-offs.
+
+### S3 native lockfile over DynamoDB state locking
+
+Terraform 1.10+ supports S3 native lockfiles (`use_lockfile = true`) instead of a DynamoDB lock table. The bootstrap stack uses this approach: a versioned, encrypted state bucket with a 90-day lifecycle rule for old versions.
+
+**Why:** One fewer resource to manage and pay for; locking stays with state storage.
+
+**Trade-off:** Requires Terraform >= 1.10 across the team.
+
+See [Terraform S3 backend lockfile](https://developer.hashicorp.com/terraform/language/backend/s3), `terraform/bootstrap/main.tf`.
+
+### CloudFront as single public entry point
+
+The app serves both a static UI and a dynamic API. Alternatives considered were separate CloudFront distributions or exposing API Gateway directly. We use one distribution with two origins (S3 + API Gateway) and path-based cache behaviors.
+
+**Why:** One URL for users (`https://short.example/demo`), one TLS cert, and short links at `/{slug}`.
+
+**Trade-off:** Cache behavior order matters — `/api/*` and static paths must be evaluated before the `/*` redirect catch-all. Frontend deploys need CloudFront invalidation.
+
+See `terraform/modules/cloudfront/main.tf` and [CloudFront routing](#cloudfront-routing) above.
+
+### Async click tracking via SQS
+
+Each redirect could increment `click_count` synchronously in the redirect Lambda, via a queue, or only in logs. We enqueue to SQS; `click_tracker` consumes batches and updates DynamoDB (DLQ after 3 failures, batch size 10).
+
+**Why:** Redirect latency is not blocked by DynamoDB writes; spikes get natural backpressure.
+
+**Trade-off:** Click counts are eventually consistent (usually sub-second); extra SQS + consumer Lambda to operate.
+
+Synchronous updates were rejected because redirect speed is the primary user-facing path.
+
+See `src/redirect/handler.py`, `src/click_tracker/handler.py`, `terraform/modules/sqs/main.tf`.

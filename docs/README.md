@@ -15,4 +15,3 @@ Project documentation for the AWS serverless URL shortener. The [README](../READ
 | [Development](development.md) | Local build, test, and contribution workflow |
 | [Cost](cost.md) | Estimated monthly spend and scaling factors |
 | [Roadmap](roadmap.md) | Planned features and known gaps |
-| [Architecture decisions](architecture-decisions.md) | ADRs: lockfile, CloudFront routing, SQS clicks |
