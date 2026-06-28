@@ -2,11 +2,9 @@
 
 **Short links. Zero servers. Built on AWS.**
 
-Turn any long URL into a clean, shareable link in seconds — then send visitors exactly where they need to go. This project is a fully serverless URL shortener you can deploy yourself: a simple web UI, a REST API, click analytics, and automatic link expiration, all running on AWS without a single EC2 instance to manage.
+A deployable serverless URL shortener with a web UI, REST API, click analytics, and link expiration — no servers to manage. Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, production-ready and ~$1–2/month at demo scale.
 
-Under the hood you'll find Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and a static S3 frontend — wired together the way you'd expect in a real production app, but lean enough to run for about the cost of a coffee each month.
-
-**Detailed documentation** — architecture diagrams, API schemas, deployment runbook, security, operations, and more — lives in the **[`docs/`](docs/)** folder. Start with the [docs index](docs/README.md).
+**Documentation** — architecture, API reference, deployment, and more — is in **[`docs/`](docs/)** ([index](docs/README.md)).
 
 ## Features
 
