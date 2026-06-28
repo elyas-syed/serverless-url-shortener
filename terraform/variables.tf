@@ -30,7 +30,7 @@ variable "rate_limit_per_minute" {
 variable "default_link_ttl_days" {
   description = "Default expiration for new links when expires_in_days is omitted."
   type        = number
-  default     = 7
+  default     = 3
 }
 
 variable "domain_name" {
