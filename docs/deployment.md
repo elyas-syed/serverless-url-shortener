@@ -43,7 +43,7 @@ cd ../
 terraform init
 ```
 
-See [ADR 001](decisions/README.md#adr-001-s3-native-lockfile-over-dynamodb-state-locking) for why native lockfile is used.
+See [ADR 001](architecture-decisions.md#adr-001-s3-native-lockfile-over-dynamodb-state-locking) for why native lockfile is used.
 
 ## Deploy the application
 

@@ -84,7 +84,7 @@ Custom domain (optional) attaches to CloudFront only. API Gateway remains a cust
 ### References
 
 - `terraform/modules/cloudfront/main.tf`
-- [Architecture](../architecture.md)
+- [Architecture](architecture.md)
 
 ---
 

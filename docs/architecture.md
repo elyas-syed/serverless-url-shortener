@@ -130,4 +130,4 @@ The catch-all `/*` behavior must come after static paths so `/api/links` and `/a
 
 ## Bootstrap stack
 
-Remote Terraform state lives in a separate bootstrap stack under `terraform/bootstrap/`. It provisions an encrypted, versioned S3 bucket with native lockfile support (`use_lockfile = true`). See [Deployment](deployment.md) and [ADR 001](decisions/README.md#adr-001-s3-native-lockfile-over-dynamodb-state-locking).
+Remote Terraform state lives in a separate bootstrap stack under `terraform/bootstrap/`. It provisions an encrypted, versioned S3 bucket with native lockfile support (`use_lockfile = true`). See [Deployment](deployment.md) and [ADR 001](architecture-decisions.md#adr-001-s3-native-lockfile-over-dynamodb-state-locking).
