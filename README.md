@@ -112,9 +112,14 @@ Then apply. (Usage plan wiring is prepared for a follow-up PR.)
 terraform/          Root stack and modules
 src/                Python Lambda handlers
 web/                Static frontend
+docs/               Architecture, API, deployment, and operations guides
 tests/              Unit tests
 scripts/demo.sh     End-to-end demo script
 ```
+
+## Documentation
+
+See [docs/](docs/) for architecture, API reference, deployment runbook, security notes, and more.
 
 ## Contributing
 

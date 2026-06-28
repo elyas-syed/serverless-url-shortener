@@ -9,12 +9,16 @@
 crash.log
 override.tf
 override.tf.json
+*.tfplan
+**/tfplan
+terraform/*.plan
 
 # Lambda build artifacts
 dist/
 *.zip
-terraform/tfplan
-terraform/*.plan
+
+# Local docs
+docs-local/
 
 # Python
 __pycache__/
@@ -22,9 +26,6 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
-
-# Local docs (not published to repo)
-docs-local/
 
 # OS / IDE
 .DS_Store
