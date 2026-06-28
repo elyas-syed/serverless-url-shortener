@@ -7,8 +7,15 @@ Architecture diagrams for this project, authored as [Eraser diagram-as-code](htt
 | File | Description |
 |------|-------------|
 | [url-shortener-architecture.eraser](url-shortener-architecture.eraser) | AWS serverless architecture (CloudFront, Lambda, DynamoDB, SQS) |
+| [Exported image](../../assets/images/architecture.jpg) | Rendered diagram for docs (from Eraser) |
 
-## View or edit in Eraser
+## Live diagram in Eraser
+
+**[Open in Eraser → AWS URL Shortener Architecture](https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas)**
+
+Edit the diagram in the browser, or update `url-shortener-architecture.eraser` in this repo and re-import.
+
+## View or edit from source
 
 1. Open [Eraser](https://app.eraser.io)
 2. Create a new file → **Diagram as code**
@@ -42,4 +49,4 @@ After adding the server:
 
 ## Export to README
 
-Once connected via MCP, you can export a diagram to PNG/JPEG and save it under `assets/images/` for the root README (same folder as the web UI screenshot).
+Exported diagram: `assets/images/architecture.jpg`. Re-export after edits via Eraser MCP (`export_diagram`) or download from the [live workspace](https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas).

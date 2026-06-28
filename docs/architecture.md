@@ -4,7 +4,17 @@
 
 The URL shortener is a single-environment, serverless application on AWS. CloudFront is the only public entry point. It routes traffic to either a static S3 frontend or API Gateway, which invokes Python Lambdas backed by DynamoDB and SQS.
 
-An editable **Eraser architecture diagram** (AWS icons, diagram-as-code) is in [docs/diagrams/url-shortener-architecture.eraser](diagrams/url-shortener-architecture.eraser). See [diagrams/README.md](diagrams/README.md) for Eraser MCP setup.
+An editable **Eraser architecture diagram** (AWS icons, diagram-as-code) is in [docs/diagrams/url-shortener-architecture.eraser](diagrams/url-shortener-architecture.eraser). **[Open live in Eraser](https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas)** · See [diagrams/README.md](diagrams/README.md).
+
+<details>
+<summary><strong>View architecture diagram</strong></summary>
+<br>
+<p align="center">
+  <a href="https://app.eraser.io/workspace/NjIOU5jPmHgeOj4OvVmO?diagram=r8o0_JSJPUNXFo8IWrvh&layout=canvas">
+    <img src="../assets/images/architecture.jpg" alt="AWS URL Shortener serverless architecture diagram" width="560">
+  </a>
+</p>
+</details>
 
 ```mermaid
 flowchart TB
