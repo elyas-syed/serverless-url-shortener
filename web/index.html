@@ -3,37 +3,124 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>URL Shortener</title>
+    <meta name="description" content="Shorten long URLs instantly with elyas.click" />
+    <title>elyas.click — URL Shortener</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/assets/style.css" />
   </head>
   <body>
-    <main class="container">
-      <header>
-        <h1>URL Shortener</h1>
-        <p>Paste a long URL and get a short link instantly.</p>
+    <div class="bg-glow bg-glow--one"></div>
+    <div class="bg-glow bg-glow--two"></div>
+
+    <main class="page">
+      <header class="hero">
+        <div class="logo">
+          <span class="logo-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+            </svg>
+          </span>
+          <span class="logo-text">elyas.click</span>
+        </div>
+        <h1>Short links, instantly.</h1>
+        <p class="hero-sub">Paste a long URL, pick an optional custom slug, and share a clean short link in seconds.</p>
       </header>
 
-      <form id="shorten-form">
-        <label for="url">Long URL</label>
-        <input id="url" name="url" type="url" placeholder="https://example.com/very/long/path" required />
+      <section class="card">
+        <form id="shorten-form" class="form">
+          <div class="field">
+            <label for="url">Long URL</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                </svg>
+              </span>
+              <input
+                id="url"
+                name="url"
+                type="url"
+                placeholder="https://example.com/very/long/path"
+                autocomplete="url"
+                required
+              />
+            </div>
+          </div>
 
-        <label for="slug">Custom slug (optional)</label>
-        <input id="slug" name="slug" type="text" placeholder="my-link" pattern="[A-Za-z0-9_-]{3,32}" />
+          <div class="field">
+            <label for="slug">
+              Custom slug
+              <span class="label-hint">optional</span>
+            </label>
+            <div class="input-wrap input-wrap--slug">
+              <span class="slug-prefix" id="slug-prefix">elyas.click/</span>
+              <input
+                id="slug"
+                name="slug"
+                type="text"
+                placeholder="my-link"
+                pattern="[A-Za-z0-9_-]{3,32}"
+                autocomplete="off"
+              />
+            </div>
+          </div>
 
-        <button type="submit">Shorten</button>
-      </form>
+          <button type="submit" class="btn btn-primary" id="submit-btn">
+            <span class="btn-label">Shorten URL</span>
+            <span class="btn-spinner hidden" aria-hidden="true"></span>
+          </button>
+        </form>
 
-      <section id="result" class="hidden">
-        <h2>Your short link</h2>
-        <div class="result-row">
-          <a id="short-url" href="#" target="_blank" rel="noopener noreferrer"></a>
-          <button id="copy-btn" type="button">Copy</button>
-        </div>
-        <p id="meta"></p>
-        <button id="refresh-stats" type="button">Refresh click count</button>
+        <div id="error" class="alert alert-error hidden" role="alert"></div>
+
+        <section id="result" class="result hidden" aria-live="polite">
+          <div class="result-header">
+            <span class="result-badge">Ready to share</span>
+            <h2>Your short link</h2>
+          </div>
+
+          <div class="short-link-box">
+            <a id="short-url" class="short-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+            <button type="button" class="btn btn-ghost" id="copy-btn" aria-label="Copy short link">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+              <span id="copy-label">Copy</span>
+            </button>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <span class="stat-label">Clicks</span>
+              <span class="stat-value" id="click-count">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Expires</span>
+              <span class="stat-value stat-value--sm" id="expires-at">—</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-secondary" id="refresh-stats">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+              <path d="M21 3v6h-6" />
+            </svg>
+            Refresh stats
+          </button>
+        </section>
       </section>
 
-      <p id="error" class="error hidden"></p>
+      <footer class="footer">
+        <p>Built on AWS serverless · Demo mode · Links expire in 7 days</p>
+      </footer>
     </main>
 
     <script src="/assets/app.js"></script>
