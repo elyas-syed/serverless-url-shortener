@@ -18,14 +18,6 @@ Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, pr
 </p>
 </details>
 
-<details>
-<summary><strong>View architecture diagram</strong></summary>
-<br>
-<p align="center">
-  <img src="assets/images/architecture.png" alt="AWS URL Shortener serverless architecture — CloudFront, Lambda, DynamoDB, SQS" width="900">
-</p>
-</details>
-
 ## Features
 
 - Shorten URLs via web UI or REST API
@@ -36,13 +28,15 @@ Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, pr
 
 ## Architecture
 
+<p align="center">
+  <img src="assets/images/architecture.png" alt="AWS URL Shortener serverless architecture — CloudFront, Lambda, DynamoDB, SQS" width="900">
+</p>
+
 ```
 Browser → CloudFront → S3 (landing page)
                      → API Gateway → Lambda → DynamoDB / SQS
                      → Lambda (redirects)
 ```
-
-High-resolution diagram: [`assets/images/architecture.png`](assets/images/architecture.png)
 
 For request flows, data model, CloudFront routing, and design rationale, see [docs/architecture.md](docs/architecture.md).
 
