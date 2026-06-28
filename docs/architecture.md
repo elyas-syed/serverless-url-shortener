@@ -6,7 +6,7 @@ The URL shortener is a single-environment, serverless application on AWS. CloudF
 
 ```mermaid
 flowchart TB
-    Browser[Browser / API client]
+    Browser[Browser or API client]
 
     subgraph edge [Edge]
         CF[CloudFront]
@@ -35,8 +35,8 @@ flowchart TB
     end
 
     Browser --> CF
-    CF -->|"/", "/assets/*", "/index.html"| S3
-    CF -->|"/api/*", "/health", "/{slug}"| APIGW
+    CF -->|static assets| S3
+    CF -->|API and redirects| APIGW
     APIGW --> Create
     APIGW --> Redirect
     APIGW --> Analytics
@@ -49,6 +49,8 @@ flowchart TB
     Tracker --> Links
     SQS -.->|failed messages| DLQ
 ```
+
+Static paths (`/`, `/assets/*`, `/index.html`) go to S3. API paths (`/api/*`, `/health`) and short links (`/{slug}`) go to API Gateway — see [CloudFront routing](#cloudfront-routing) below.
 
 ## Request flows
 
