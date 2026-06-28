@@ -13,6 +13,8 @@ override.tf.json
 # Lambda build artifacts
 dist/
 *.zip
+terraform/tfplan
+terraform/*.plan
 
 # Python
 __pycache__/
