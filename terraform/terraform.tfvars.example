@@ -8,6 +8,10 @@ default_link_ttl_days = 3
 domain_name    = ""
 hosted_zone_id = ""
 
+# Optional AWS WAF on CloudFront (~$5+/month minimum when true). See docs/cost.md.
+enable_waf     = false
+waf_rate_limit = 2000
+
 tags = {
   Project = "url-shortener"
   Managed = "terraform"

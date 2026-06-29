@@ -27,3 +27,13 @@ output "cloudfront_domain_name" {
   description = "CloudFront distribution domain name."
   value       = module.cloudfront.distribution_domain_name
 }
+
+output "waf_enabled" {
+  description = "Whether AWS WAF is attached to CloudFront."
+  value       = var.enable_waf
+}
+
+output "waf_web_acl_arn" {
+  description = "WAF web ACL ARN (null when enable_waf is false)."
+  value       = module.waf.web_acl_arn
+}
