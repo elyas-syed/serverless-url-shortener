@@ -2,19 +2,15 @@
 
 **Short links. Zero servers. Built on AWS.**
 
-A deployable Production grade serverless URL shortener with a web UI, REST API, click analytics, and link expiration with no servers to manage. 
+A deployable, production-grade serverless URL shortener with a web UI, REST API, click analytics, and link expiration — no servers to manage. Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3.
 
-Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, production-ready and ~$1–2/month at demo scale.
-
-**Full Documentation** — architecture, API reference, deployment, and more — is in **[`docs/`](docs/)** ([index](docs/README.md)).
+**[Documentation](docs/README.md)** · Terraform · Python 3.12 · Serverless
 
 <details>
-<summary><strong>View web UI screenshot</strong> · <a href="https://elyas.click">elyas.click</a></summary>
+<summary><strong>View web UI screenshot</strong></summary>
 <br>
 <p align="center">
-  <a href="https://elyas.click">
-    <img src="assets/images/web-ui.jpg" alt="elyas.click URL shortener — shorten a link and view click stats" width="560">
-  </a>
+  <img src="assets/images/web-ui.jpg" alt="URL shortener web UI — shorten a link and view click stats" width="560">
 </p>
 </details>
 
@@ -24,7 +20,7 @@ Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, pr
 - Custom slugs and link expiration (default **3 days**, DynamoDB TTL)
 - Async click analytics via SQS
 - Demo mode: open create API with 5 requests/min/IP rate limit
-- Upgrade path to API key auth via `auth_mode` variable
+- Optional custom domain, API key auth, and AWS WAF (see [Optional configuration](#optional-configuration))
 
 ## Architecture
 
@@ -32,24 +28,16 @@ Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3, pr
   <img src="assets/images/architecture.png" alt="AWS URL Shortener serverless architecture — CloudFront, Lambda, DynamoDB, SQS" width="900">
 </p>
 
-```
-Browser → CloudFront → S3 (landing page)
-                     → API Gateway → Lambda → DynamoDB / SQS
-                     → Lambda (redirects)
-```
+Request flows, data model, CloudFront routing, and design rationale: [docs/architecture.md](docs/architecture.md).
 
-For request flows, data model, CloudFront routing, and design rationale, see [docs/architecture.md](docs/architecture.md).
+## Quick start
 
-## Prerequisites
+### Prerequisites
 
 - AWS account with credentials configured
 - Terraform >= 1.10 (required for S3 native state lockfile)
 - Python 3.12+
 - `make`, `zip`
-
-Optional: custom domain in Route53
-
-## Quick start
 
 ### 1. Bootstrap remote state (one time)
 
@@ -84,20 +72,22 @@ terraform plan
 terraform apply
 ```
 
-Note the `app_url` output — that is your public shortener URL. See [docs/deployment.md](docs/deployment.md) for custom domain setup, updates, and CloudFront invalidation.
+Note the `app_url` output — that is your public shortener URL.
 
-### 4. Demo
+### 4. Try it
 
-Browser: open `app_url`, paste a URL, click Shorten.
+**Browser:** open `app_url`, paste a URL, click Shorten.
 
-Terminal:
+**Terminal:**
 
 ```bash
 chmod +x scripts/demo.sh
 ./scripts/demo.sh "$(terraform -chdir=terraform output -raw app_url)"
 ```
 
-## API
+Custom domain setup, updates, and CloudFront invalidation: [docs/deployment.md](docs/deployment.md).
+
+## API at a glance
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -108,21 +98,28 @@ chmod +x scripts/demo.sh
 | HEAD | `/{slug}` | Redirect headers only |
 | GET | `/health` | Health check |
 
-Full request/response schemas, validation rules, and error codes: [docs/api.md](docs/api.md).
-
 ```bash
 curl -X POST "$APP_URL/api/links" \
   -H "Content-Type: application/json" \
   -d '{"url":"https://example.com","slug":"demo"}'
 ```
 
+Full request/response schemas, validation rules, and error codes: [docs/api.md](docs/api.md).
+
+## Optional configuration
+
+Set these in `terraform/terraform.tfvars` (see [terraform.tfvars.example](terraform/terraform.tfvars.example)).
+
+| Variable | Default | Purpose | Details |
+|----------|---------|---------|---------|
+| `auth_mode` | `open` | API key auth for create/delete | [security.md](docs/security.md) |
+| `domain_name` | `""` | Custom domain via Route53 + ACM | [deployment.md](docs/deployment.md) |
+| `enable_waf` | `false` | Edge rate limiting on CloudFront (~$5+/month) | [cost.md](docs/cost.md) · [security.md](docs/security.md) |
+| `default_link_ttl_days` | `3` | Default link expiration | [architecture.md](docs/architecture.md) |
+
 ## Cost
 
-~**$1–2/month** at demo traffic. Breakdown and scaling factors: [docs/cost.md](docs/cost.md).
-
-## API key auth
-
-Set `auth_mode = "api_key"` in `terraform.tfvars` and apply. Usage plan wiring is planned — see [docs/security.md](docs/security.md) and [docs/roadmap.md](docs/roadmap.md).
+~**$1–2/month** at demo traffic. Enabling WAF adds ~**$5+/month** minimum. Breakdown and scaling factors: [docs/cost.md](docs/cost.md).
 
 ## Project layout
 
@@ -136,13 +133,20 @@ tests/              Unit tests
 scripts/demo.sh     End-to-end demo script
 ```
 
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Architecture](docs/architecture.md) | System design, request flows, and data model |
+| [API reference](docs/api.md) | REST endpoints, schemas, and error codes |
+| [Deployment](docs/deployment.md) | Bootstrap, deploy, custom domain, and runbook |
+| [Security](docs/security.md) | Auth modes, validation, rate limits, and hardening |
+| [Terraform](docs/terraform.md) | Module layout, variables, and extension guide |
+| [Operations](docs/operations.md) | Monitoring, troubleshooting, and day-2 tasks |
+| [Development](docs/development.md) | Local build, test, and contribution workflow |
+| [Cost](docs/cost.md) | Estimated monthly spend and scaling factors |
+| [Roadmap](docs/roadmap.md) | Planned features and known gaps |
+
 ## Contributing
 
-Feature branches and pull requests. Full dev workflow: [docs/development.md](docs/development.md).
-
-```bash
-git checkout -b feat/my-change
-# ... make changes, commit ...
-git push -u origin feat/my-change
-gh pr create --base main --head feat/my-change
-```
+Feature branches and pull requests welcome. See [docs/development.md](docs/development.md) for the full workflow.
