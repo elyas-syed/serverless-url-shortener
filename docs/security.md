@@ -6,11 +6,11 @@ The default configuration is designed for **portfolio demos and learning**, not 
 
 | Risk | Mitigation (current) | Production gap |
 |------|---------------------|----------------|
-| Abuse of create API | Per-IP rate limiting (5/min) | API keys, WAF, account quotas |
+| Abuse of create API | Per-IP rate limiting (5/min) | API keys, optional WAF, account quotas |
 | SSRF via destination URLs | URL validation blocks private/loopback IPs | Stricter allowlists if needed |
 | Slug squatting | Reserved slug list | Auth required to create |
 | Data deletion | DELETE disabled in open mode | API key auth for delete |
-| DDoS | API Gateway throttling | AWS WAF on CloudFront |
+| DDoS | API Gateway throttling | Optional AWS WAF on CloudFront (`enable_waf`) |
 | Data at rest | DynamoDB SSE, S3 SSE | — |
 | Data in transit | HTTPS everywhere via CloudFront | — |
 
@@ -84,11 +84,16 @@ Bootstrap bucket configuration:
 - `prevent_destroy` lifecycle on the bucket resource
 - Noncurrent versions expire after 90 days
 
+## Optional controls (off by default)
+
+| Control | How to enable | Why off by default |
+|---------|---------------|-------------------|
+| AWS WAF | `enable_waf = true` in `terraform.tfvars` | ~$5+/month minimum; overkill for demo traffic |
+
 ## What we skipped (and why)
 
 | Control | Reason |
 |---------|--------|
-| AWS WAF | Cost (~$5+/month minimum); overkill for demo traffic |
 | Cognito / OAuth | Complexity; API keys sufficient for next tier |
 | VPC / private subnets | Not needed for managed serverless APIs |
 | Secrets Manager | No secrets in demo mode |
@@ -96,7 +101,7 @@ Bootstrap bucket configuration:
 ## Production hardening checklist
 
 - [ ] Enable `auth_mode = "api_key"` with usage plans
-- [ ] Add AWS WAF with rate-based rules on CloudFront
+- [ ] Set `enable_waf = true` for edge rate limiting on CloudFront (see [Cost](cost.md))
 - [ ] Enable AWS CloudTrail and log aggregation
 - [ ] Tighten CORS if exposing API to third-party browsers
 - [ ] Review CloudWatch alarms and SNS notifications
