@@ -16,7 +16,8 @@ terraform/
     ├── dynamodb/
     ├── frontend/
     ├── lambda/
-    └── sqs/
+    ├── sqs/
+    └── waf/
 ```
 
 ## Module dependency graph
@@ -26,7 +27,7 @@ dynamodb ──┐
 sqs ───────┼──► lambda ──► api_gateway
            │                  │
            │                  ▼
-frontend ──┴────────────► cloudfront
+frontend ──┴────────────► cloudfront ──► waf (optional)
 ```
 
 ## Modules
@@ -81,6 +82,13 @@ Default stage auto-deploys with throttling from `rate_limit_per_minute`.
 - Path-based cache behaviors (see [Architecture](architecture.md))
 - Optional ACM cert + Route53 alias for custom domain
 
+### `waf`
+
+- Optional Web ACL scoped to CloudFront (`enable_waf`, default `false`)
+- Rate-based rule blocks IPs exceeding `waf_rate_limit` requests per 5 minutes
+- Associated with the CloudFront distribution via `aws_wafv2_web_acl_association`
+- Deployed in `us-east-1` (required for CloudFront-scoped WAF)
+
 ## Root variables
 
 | Variable | Passed to | Effect |
@@ -91,6 +99,8 @@ Default stage auto-deploys with throttling from `rate_limit_per_minute`.
 | `default_link_ttl_days` | Lambda | Default expiration |
 | `domain_name` | CloudFront, Lambda `BASE_URL` | Custom domain |
 | `hosted_zone_id` | CloudFront | DNS records |
+| `enable_waf` | WAF | Attach Web ACL to CloudFront |
+| `waf_rate_limit` | WAF | Per-IP rate limit (5-minute window) |
 | `tags` | All modules | Resource tags |
 
 ## Bootstrap vs root stack
@@ -128,6 +138,8 @@ Tags default to `Project = url-shortener`, `Managed = terraform`.
 | `app_url` | Public shortener URL |
 | `api_endpoint` | Raw API Gateway URL |
 | `cloudfront_domain_name` | CloudFront distribution domain |
+| `waf_enabled` | Whether WAF is attached (`enable_waf`) |
+| `waf_web_acl_arn` | WAF Web ACL ARN (null when disabled) |
 | `links_table_name` | DynamoDB links table |
 | `rate_limits_table_name` | DynamoDB rate limits table |
 | `click_events_queue_url` | SQS queue URL |

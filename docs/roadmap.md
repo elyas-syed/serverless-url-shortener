@@ -20,11 +20,12 @@ Planned improvements and known gaps. Items are ordered roughly by priority for m
 - Optional `terraform plan` with OIDC AWS role
 - Automated Lambda build artifact caching
 
-### AWS WAF
+### AWS WAF (extended rules)
 
-- Rate-based rules on CloudFront
-- Common rule set for known bad inputs
-- Budget impact: ~$5+/month — see [Cost](cost.md)
+- AWS Managed Rules / common rule set for known bad inputs
+- Budget impact: ~$5+/month base already applies when WAF is enabled — see [Cost](cost.md)
+
+Basic rate-based WAF on CloudFront is **implemented** as an optional toggle (`enable_waf`, default `false`).
 
 ### Enhanced observability
 
@@ -56,6 +57,7 @@ Planned improvements and known gaps. Items are ordered roughly by priority for m
 - [x] Async click tracking via SQS
 - [x] Web UI with modern styling
 - [x] Default link TTL (3 days)
+- [x] Optional AWS WAF on CloudFront (rate-based rule, `enable_waf`)
 - [x] Project documentation (`docs/`)
 
 ## Contributing

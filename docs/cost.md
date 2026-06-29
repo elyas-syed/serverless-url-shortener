@@ -8,7 +8,9 @@ Estimated monthly cost for **demo-scale traffic** (hundreds of redirects/day, oc
 |-------|----------------|
 | Demo / portfolio | **~$1–2/month** |
 | Light production (10k redirects/day) | ~$5–15/month |
-| With WAF | +$5/month minimum |
+| With WAF (`enable_waf = true`) | +$5/month minimum |
+
+WAF is **disabled by default** (`enable_waf = false` in `terraform.tfvars.example`). Set `enable_waf = true` only when you want edge protection and accept the extra cost.
 
 Costs vary by region and actual usage. Use the [AWS Pricing Calculator](https://calculator.aws/) for precise estimates.
 
@@ -64,7 +66,7 @@ Costs vary by region and actual usage. Use the [AWS Pricing Calculator](https://
 | Factor | Impact |
 |--------|--------|
 | Higher redirect volume | Lambda, API Gateway, CloudFront data transfer |
-| WAF on CloudFront | ~$5+/month base + per-request charges |
+| WAF on CloudFront (`enable_waf = true`) | ~$5+/month base + per-request charges |
 | CloudWatch log retention > 7 days | Storage charges |
 | Multi-region deployment | Duplicated resources |
 | Provisioned DynamoDB | Only if on-demand is insufficient |
@@ -81,7 +83,7 @@ Costs vary by region and actual usage. Use the [AWS Pricing Calculator](https://
 
 When moving beyond demo mode, budget for:
 
-- **AWS WAF** — bot protection and rate-based rules
+- **AWS WAF** — optional via `enable_waf`; rate-based rule included, managed rule sets still a roadmap item
 - **SNS** — alarm notifications
 - **Secrets Manager** — if storing API keys outside Terraform
 - **Higher CloudFront traffic** — viral links or marketing campaigns
