@@ -81,3 +81,17 @@ module "cloudfront" {
   frontend_bucket_arn                  = module.frontend.bucket_arn
   frontend_bucket_regional_domain_name = module.frontend.bucket_regional_domain_name
 }
+
+module "waf" {
+  source = "./modules/waf"
+
+  providers = {
+    aws.us_east_1 = aws.us_east_1
+  }
+
+  enable_waf                  = var.enable_waf
+  project_name                = var.project_name
+  tags                        = var.tags
+  rate_limit                  = var.waf_rate_limit
+  cloudfront_distribution_arn = module.cloudfront.distribution_arn
+}

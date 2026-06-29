@@ -45,6 +45,18 @@ variable "hosted_zone_id" {
   default     = ""
 }
 
+variable "enable_waf" {
+  description = "Attach AWS WAF to CloudFront (~$5+/month minimum when enabled). See docs/cost.md."
+  type        = bool
+  default     = false
+}
+
+variable "waf_rate_limit" {
+  description = "WAF rate-based rule: max requests per 5 minutes per IP before block (only when enable_waf is true)."
+  type        = number
+  default     = 2000
+}
+
 variable "tags" {
   description = "Common resource tags."
   type        = map(string)
