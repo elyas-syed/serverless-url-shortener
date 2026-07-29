@@ -6,13 +6,9 @@ A deployable, production-grade serverless URL shortener with a web UI, REST API,
 
 **[Documentation](docs/README.md)** · Terraform · Python 3.12 · Serverless
 
-<details>
-<summary><strong>View web UI screenshot</strong></summary>
-<br>
 <p align="center">
   <img src="assets/images/web-ui.jpg" alt="URL shortener web UI — shorten a link and view click stats" width="560">
 </p>
-</details>
 
 ## Features
 
