@@ -7,6 +7,10 @@ A deployable, production-grade serverless URL shortener with a web UI, REST API,
 **[Documentation](docs/README.md)** · Terraform · Python 3.12 · Serverless
 
 <p align="center">
+  <img src="assets/images/infographic.png" alt="AWS URL Shortener architecture — CloudFront edge, Lambda, DynamoDB, SQS, optional WAF — by elyas-syed" width="900">
+</p>
+
+<p align="center">
   <img src="assets/images/web-ui.jpg" alt="URL shortener web UI — shorten a link and view click stats" width="560">
 </p>
 
