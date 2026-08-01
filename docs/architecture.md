@@ -12,52 +12,6 @@ The URL shortener is a single-environment, serverless application on AWS. CloudF
   <img src="../assets/images/architecture.png" alt="AWS URL Shortener serverless architecture — CloudFront, Lambda, DynamoDB, SQS" width="900">
 </p>
 
-```mermaid
-flowchart TB
-    Browser[Browser or API client]
-
-    subgraph edge [Edge]
-        CF[CloudFront]
-    end
-
-    subgraph static [Static frontend]
-        S3[S3 bucket]
-    end
-
-    subgraph api [API layer]
-        APIGW[API Gateway HTTP API]
-    end
-
-    subgraph compute [Lambda]
-        Create[create_link]
-        Redirect[redirect]
-        Analytics[get_analytics]
-        Tracker[click_tracker]
-    end
-
-    subgraph data [Data]
-        Links[(DynamoDB links)]
-        RateLimits[(DynamoDB rate_limits)]
-        SQS[SQS click_events]
-        DLQ[SQS DLQ]
-    end
-
-    Browser --> CF
-    CF -->|static assets| S3
-    CF -->|API and redirects| APIGW
-    APIGW --> Create
-    APIGW --> Redirect
-    APIGW --> Analytics
-    Create --> Links
-    Create --> RateLimits
-    Redirect --> Links
-    Redirect --> SQS
-    Analytics --> Links
-    SQS --> Tracker
-    Tracker --> Links
-    SQS -.->|failed messages| DLQ
-```
-
 Static paths (`/`, `/assets/*`, `/index.html`) go to S3. API paths (`/api/*`, `/health`) and short links (`/{slug}`) go to API Gateway — see [CloudFront routing](#cloudfront-routing) below.
 
 ## Request flows
