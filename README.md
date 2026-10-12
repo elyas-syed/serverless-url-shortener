@@ -11,7 +11,7 @@ A deployable, production-grade serverless URL shortener with a web UI, REST API,
 </p>
 
 <p align="center">
-  <img src="assets/images/web-ui.jpg" alt="URL shortener web UI — shorten a link and view click stats" width="560">
+  <img src="assets/images/web-ui.jpg" alt="URL shortener web UI — short link, QR code, and click stats" width="560">
 </p>
 
 ## Features
