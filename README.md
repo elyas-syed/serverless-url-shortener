@@ -43,10 +43,10 @@ Request flows, data model, CloudFront routing, and design rationale: [docs/archi
 ### 1. Bootstrap remote state (one time)
 
 ```bash
-make bootstrap
+make bootstrap-apply
 ```
 
-A random hex suffix is appended to the state bucket prefix. `make bootstrap` writes gitignored `terraform/backend.hcl`, then:
+A random hex suffix is appended to the state bucket prefix. `make bootstrap-apply` writes gitignored `terraform/backend.hcl`, then:
 
 ```bash
 cd terraform

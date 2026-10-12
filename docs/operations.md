@@ -117,6 +117,6 @@ Then destroy the bootstrap state bucket (separate stack):
 make bootstrap-destroy
 ```
 
-You must type `destroy-bootstrap` to confirm. Use the hyphenated target — `make bootstrap destroy` is not a valid single target (Make would try `bootstrap` then a non-existent `destroy`).
+You must type `destroy-bootstrap` to confirm. Use `make bootstrap-destroy` (hyphenated), not space-separated Make goals.
 
 Order matters: if you delete the state bucket while the app stack still uses it for remote state, you can lose Terraform state and leave orphaned AWS resources.

@@ -1,11 +1,11 @@
-.PHONY: build test validate plan apply infra-destroy bootstrap bootstrap-destroy clean serve
+.PHONY: build test validate plan apply infra-destroy bootstrap-apply bootstrap-destroy clean serve
 
 ROOT := $(CURDIR)
 
 serve:
 	@python3 $(ROOT)/scripts/dev-server.py
 
-bootstrap:
+bootstrap-apply:
 	@test -f $(ROOT)/terraform/bootstrap/terraform.tfvars || \
 		cp $(ROOT)/terraform/bootstrap/terraform.tfvars.example $(ROOT)/terraform/bootstrap/terraform.tfvars
 	cd $(ROOT)/terraform/bootstrap && terraform init && terraform apply

@@ -19,12 +19,12 @@ The bootstrap stack in `terraform/bootstrap/` creates the S3 bucket for Terrafor
 Preferred:
 
 ```bash
-make bootstrap
+make bootstrap-apply
 cd terraform
 terraform init -backend-config=backend.hcl
 ```
 
-`make bootstrap` writes gitignored `terraform/backend.hcl` with the bucket name. Do not commit that file.
+`make bootstrap-apply` writes gitignored `terraform/backend.hcl` with the bucket name. Do not commit that file.
 
 Manual equivalent: apply `terraform/bootstrap`, copy `backend.hcl.example` → `backend.hcl`, set `bucket` from `terraform -chdir=bootstrap output -raw state_bucket_name`, then `terraform init -backend-config=backend.hcl`.
 

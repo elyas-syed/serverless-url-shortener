@@ -42,11 +42,11 @@ terraform/
 | `make plan` | Build + `terraform plan` (no remote backend) |
 | `make apply` | Build + interactive `terraform apply` (app stack) |
 | `make infra-destroy` | Interactive destroy of the **app** stack only |
-| `make bootstrap` | Create state bucket; write gitignored `backend.hcl` |
+| `make bootstrap-apply` | Create state bucket; write gitignored `backend.hcl` |
 | `make bootstrap-destroy` | Destroy bootstrap state bucket (app stack must be gone first) |
 | `make clean` | Remove `dist/`, caches |
 
-**Naming note:** Use `make bootstrap-destroy` (hyphen) for the state bucket. `make bootstrap destroy` is invalid now that app teardown is `make infra-destroy` — prefer the hyphenated target.
+**Naming note:** Bootstrap targets are hyphenated pairs: `bootstrap-apply` / `bootstrap-destroy`.
 
 ### Build process
 
