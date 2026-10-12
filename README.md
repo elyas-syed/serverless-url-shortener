@@ -71,16 +71,9 @@ Note the `app_url` output — that is your public shortener URL.
 
 ### 4. Try it
 
-**Browser:** open `app_url`, paste a URL, click Shorten. The result panel shows the short link, click stats, and a QR code (with PNG download).
+Open `app_url`, paste a URL, click Shorten. The result panel shows the short link, click stats, and a QR code (with PNG download).
 
-**Terminal:**
-
-```bash
-chmod +x scripts/demo.sh
-./scripts/demo.sh "$(terraform -chdir=terraform output -raw app_url)"
-```
-
-Custom domain setup, updates, and CloudFront invalidation: [docs/deployment.md](docs/deployment.md).
+Custom domain setup, CLI smoke test (`scripts/demo.sh`), updates, and CloudFront invalidation: [docs/deployment.md](docs/deployment.md).
 
 ## API at a glance
 
