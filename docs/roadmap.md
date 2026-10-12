@@ -42,10 +42,10 @@ Basic rate-based WAF on CloudFront is **implemented** as an optional toggle (`en
 ## Nice to have
 
 - Link preview / Open Graph metadata endpoint
-- QR code generation in web UI
 - Admin dashboard for link management
 - Custom slug namespaces per API key
 - DynamoDB point-in-time recovery toggle for production
+- Server-side QR API (PNG/SVG endpoint) if non-UI clients need it
 
 ## Completed
 
@@ -56,6 +56,7 @@ Basic rate-based WAF on CloudFront is **implemented** as an optional toggle (`en
 - [x] Custom domain support (Route53 + ACM)
 - [x] Async click tracking via SQS
 - [x] Web UI with modern styling
+- [x] Client-side QR code generation in the web UI (PNG download)
 - [x] Default link TTL (3 days)
 - [x] Optional AWS WAF on CloudFront (rate-based rule, `enable_waf`)
 - [x] Project documentation (`docs/`)

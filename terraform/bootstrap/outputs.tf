@@ -4,7 +4,7 @@ output "state_bucket_name" {
 }
 
 output "backend_config" {
-  description = "Copy into terraform/versions.tf backend block."
+  description = "Write to terraform/backend.hcl (gitignored), then run: terraform init -backend-config=backend.hcl"
   value = {
     bucket       = aws_s3_bucket.terraform_state.bucket
     key          = "url-shortener/terraform.tfstate"

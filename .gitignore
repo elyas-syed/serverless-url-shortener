@@ -4,6 +4,10 @@
 *.tfstate.*
 *.tfvars
 !terraform.tfvars.example
+backend.hcl
+**/backend.hcl
+!backend.hcl.example
+!**/backend.hcl.example
 # Keep lock file tracked for reproducible provider versions.
 # .terraform.lock.hcl
 crash.log

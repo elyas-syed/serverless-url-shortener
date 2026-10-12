@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.6"
+    }
   }
 }
 
@@ -13,15 +17,20 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = var.state_bucket_name
+resource "random_id" "state_suffix" {
+  byte_length = 4
+}
 
-  lifecycle {
-    prevent_destroy = true
-  }
+locals {
+  state_bucket_name = "${var.state_bucket_prefix}-${random_id.state_suffix.hex}"
+}
+
+resource "aws_s3_bucket" "terraform_state" {
+  bucket        = local.state_bucket_name
+  force_destroy = var.force_destroy
 
   tags = merge(var.tags, {
-    Name = var.state_bucket_name
+    Name = local.state_bucket_name
   })
 }
 

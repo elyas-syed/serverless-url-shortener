@@ -23,6 +23,7 @@ Static paths (`/`, `/assets/*`, `/index.html`) go to S3. API paths (`/api/*`, `/
 3. In `auth_mode = "open"`, a per-IP rate limit is checked in the `rate_limits` DynamoDB table.
 4. A new item is written to the `links` table with `expires_at` for TTL.
 5. Response returns `short_url`, `slug`, and metadata.
+6. The web UI renders a QR code for `short_url` in the browser (no server-side QR API).
 
 ### Redirect
 
@@ -84,7 +85,7 @@ The catch-all `/*` behavior must come after static paths so `/api/links` and `/a
 
 | Component | Technology | Role |
 |-----------|------------|------|
-| Frontend | S3 + static HTML/JS | Web UI for shortening URLs |
+| Frontend | S3 + static HTML/JS | Web UI for shortening URLs and client-side QR codes |
 | Edge | CloudFront | TLS, routing, caching |
 | API | API Gateway HTTP API | REST + redirect routes |
 | Compute | Lambda (Python 3.12) | Business logic |

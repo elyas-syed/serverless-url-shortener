@@ -12,8 +12,11 @@ const btnLabel = submitBtn.querySelector(".btn-label");
 const btnSpinner = submitBtn.querySelector(".btn-spinner");
 const slugPrefix = document.getElementById("slug-prefix");
 const urlInput = document.getElementById("url");
+const qrCodeEl = document.getElementById("qr-code");
+const downloadQrBtn = document.getElementById("download-qr-btn");
 
 let currentSlug = null;
+let qrCode = null;
 
 slugPrefix.textContent = `${window.location.host}/`;
 
@@ -63,6 +66,42 @@ function updateStats(data) {
   expiresAtEl.textContent = data.expires_at ? formatExpiry(data.expires_at) : "—";
 }
 
+function renderQr(url) {
+  if (typeof QRCode === "undefined") {
+    qrCodeEl.innerHTML = "";
+    return;
+  }
+
+  qrCodeEl.innerHTML = "";
+  qrCode = new QRCode(qrCodeEl, {
+    text: url,
+    width: 128,
+    height: 128,
+    colorDark: "#0f172a",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.M,
+  });
+}
+
+function qrImageDataUrl() {
+  const canvas = qrCodeEl.querySelector("canvas");
+  if (canvas) {
+    return canvas.toDataURL("image/png");
+  }
+  const img = qrCodeEl.querySelector("img");
+  return img?.src || null;
+}
+
+function downloadQrPng() {
+  const dataUrl = qrImageDataUrl();
+  if (!dataUrl || !currentSlug) return;
+
+  const link = document.createElement("a");
+  link.href = dataUrl;
+  link.download = `qr-${currentSlug}.png`;
+  link.click();
+}
+
 async function refreshClickCount() {
   if (!currentSlug) return;
 
@@ -109,6 +148,7 @@ form.addEventListener("submit", async (event) => {
     shortUrlLink.href = fullShortUrl;
     shortUrlLink.textContent = fullShortUrl;
     updateStats(data);
+    renderQr(fullShortUrl);
     result.classList.remove("hidden");
     copyBtn.classList.remove("copied");
     copyLabel.textContent = "Copy";
@@ -130,3 +170,4 @@ copyBtn.addEventListener("click", async () => {
 });
 
 refreshStats.addEventListener("click", refreshClickCount);
+downloadQrBtn.addEventListener("click", downloadQrPng);
