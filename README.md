@@ -1,4 +1,4 @@
-# AWS URL Shortener
+# Serverless AWS URL Shortener
 
 **Short links. Zero servers. Built on AWS.**
 
