@@ -6,7 +6,7 @@
 - `make`, `zip`
 - Terraform >= 1.10 (for `validate` / `plan` targets)
 
-AWS credentials are only required for `terraform apply`, `make apply` / `make infra-destroy`, bootstrap targets, and live integration testing.
+AWS credentials are only required for `terraform apply`, `make infra-apply` / `make infra-destroy`, bootstrap targets, and live integration testing.
 
 ## Project layout
 
@@ -40,7 +40,7 @@ terraform/
 | `make test` | Run pytest in a local venv |
 | `make validate` | Build + `terraform validate` (no remote backend) |
 | `make plan` | Build + `terraform plan` (no remote backend) |
-| `make apply` | Build + interactive `terraform apply` (app stack) |
+| `make infra-apply` | Build + interactive `terraform apply` (app stack) |
 | `make infra-destroy` | Interactive destroy of the **app** stack only |
 | `make bootstrap-apply` | Create state bucket; write gitignored `backend.hcl` |
 | `make bootstrap-destroy` | Destroy bootstrap state bucket (app stack must be gone first) |

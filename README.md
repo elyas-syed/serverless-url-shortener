@@ -64,7 +64,7 @@ make test
 
 ```bash
 cp terraform/terraform.tfvars.example terraform/terraform.tfvars
-make apply
+make infra-apply
 ```
 
 Note the `app_url` output — that is your public shortener URL.

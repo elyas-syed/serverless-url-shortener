@@ -1,4 +1,4 @@
-.PHONY: build test validate plan apply infra-destroy bootstrap-apply bootstrap-destroy clean serve
+.PHONY: build test validate plan infra-apply infra-destroy bootstrap-apply bootstrap-destroy clean serve
 
 ROOT := $(CURDIR)
 
@@ -50,7 +50,7 @@ validate: build
 plan: build
 	cd terraform && rm -rf .terraform && terraform init -backend=false && terraform plan
 
-apply: build
+infra-apply: build
 	cd terraform && terraform apply
 
 infra-destroy:
