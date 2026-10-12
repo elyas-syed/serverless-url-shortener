@@ -81,8 +81,10 @@ Bootstrap bucket configuration:
 - Versioning enabled (required for lockfile)
 - SSE-S3 encryption
 - Public access blocked
-- `prevent_destroy` lifecycle on the bucket resource
+- Globally unique name via `random_id` hex suffix (no account ID in repo)
+- Bucket name kept in gitignored `backend.hcl`, not in tracked Terraform
 - Noncurrent versions expire after 90 days
+- Teardown via `make infra-destroy` (enables `force_destroy`; destroy the app stack first)
 
 ## Optional controls (off by default)
 

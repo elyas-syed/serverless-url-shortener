@@ -4,9 +4,16 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "state_bucket_name" {
-  description = "Globally unique S3 bucket name for Terraform state."
+variable "state_bucket_prefix" {
+  description = "Prefix for the Terraform state bucket. A random 8-character hex suffix is appended for global uniqueness."
   type        = string
+  default     = "url-shortener-tf-state"
+}
+
+variable "force_destroy" {
+  description = "Allow Terraform to delete the state bucket even if it still contains objects. Used by make infra-destroy."
+  type        = bool
+  default     = false
 }
 
 variable "tags" {

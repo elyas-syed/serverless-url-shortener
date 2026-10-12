@@ -97,6 +97,24 @@
             </button>
           </div>
 
+          <div class="qr-panel">
+            <div class="qr-frame" aria-hidden="true">
+              <div id="qr-code"></div>
+            </div>
+            <div class="qr-meta">
+              <p class="qr-title">QR code</p>
+              <p class="qr-hint">Scan to open this short link on a phone.</p>
+              <button type="button" class="btn btn-ghost" id="download-qr-btn" aria-label="Download QR code">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>Download PNG</span>
+              </button>
+            </div>
+          </div>
+
           <div class="stats">
             <div class="stat">
               <span class="stat-label">Clicks</span>
@@ -129,6 +147,7 @@
       </footer>
     </main>
 
+    <script src="/assets/qrcode.min.js"></script>
     <script src="/assets/app.js"></script>
   </body>
 </html>

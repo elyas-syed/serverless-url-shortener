@@ -14,36 +14,25 @@ Optional for custom domain:
 
 ## One-time: bootstrap remote state
 
-The bootstrap stack in `terraform/bootstrap/` creates the S3 bucket for Terraform state.
+The bootstrap stack in `terraform/bootstrap/` creates the S3 bucket for Terraform state. A random hex suffix is appended to the bucket prefix (no account ID in the repo).
+
+Preferred:
 
 ```bash
-cd terraform/bootstrap
-cp terraform.tfvars.example terraform.tfvars
-# Set state_bucket_name to a globally unique value
-terraform init
-terraform apply
+make bootstrap
+cd terraform
+terraform init -backend-config=backend.hcl
 ```
 
-Copy the `backend_config` output into the `backend "s3"` block in `terraform/versions.tf`:
+`make bootstrap` writes gitignored `terraform/backend.hcl` with the bucket name. Do not commit that file.
 
-```hcl
-backend "s3" {
-  bucket       = "your-unique-state-bucket"
-  key          = "url-shortener/terraform.tfstate"
-  region       = "us-east-1"
-  encrypt      = true
-  use_lockfile = true
-}
-```
+Manual equivalent: apply `terraform/bootstrap`, copy `backend.hcl.example` → `backend.hcl`, set `bucket` from `terraform -chdir=bootstrap output -raw state_bucket_name`, then `terraform init -backend-config=backend.hcl`.
 
-Then reinitialize the root stack:
-
-```bash
-cd ../
-terraform init
-```
+`versions.tf` already has the shared backend settings (`key`, `region`, `encrypt`, `use_lockfile`). Only `bucket` belongs in `backend.hcl`.
 
 See [Design notes](architecture.md#design-notes) in the architecture doc for why native lockfile is used.
+
+**Note:** Changing the bootstrap naming scheme replaces the state bucket. Prefer greenfield bootstrap or `make infra-destroy` (after `make destroy`) before recreating.
 
 ## Deploy the application
 
@@ -159,5 +148,6 @@ Creates a link, checks redirect headers, and fetches analytics.
 - [ ] `make build` completed
 - [ ] `terraform apply` succeeded
 - [ ] `app_url` loads the web UI
+- [ ] Shorten a URL shows short link, stats, and QR code (PNG download)
 - [ ] `scripts/demo.sh` passes
 - [ ] CloudFront invalidation run after frontend updates

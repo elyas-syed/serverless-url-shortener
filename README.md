@@ -2,7 +2,7 @@
 
 **Short links. Zero servers. Built on AWS.**
 
-A deployable, production-grade serverless URL shortener with a web UI, REST API, click analytics, and link expiration — no servers to manage. Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3.
+A deployable, production-grade serverless URL shortener with a web UI, REST API, click analytics, QR codes, and link expiration — no servers to manage. Built with Terraform, Lambda, DynamoDB, SQS, API Gateway, CloudFront, and S3.
 
 **[Documentation](docs/README.md)** · Terraform · Python 3.12 · Serverless
 
@@ -17,6 +17,7 @@ A deployable, production-grade serverless URL shortener with a web UI, REST API,
 ## Features
 
 - Shorten URLs via web UI or REST API
+- QR code for each short link (generated in the browser; download as PNG)
 - Custom slugs and link expiration (default **3 days**, DynamoDB TTL)
 - Async click analytics via SQS
 - Demo mode: open create API with 5 requests/min/IP rate limit
@@ -42,18 +43,14 @@ Request flows, data model, CloudFront routing, and design rationale: [docs/archi
 ### 1. Bootstrap remote state (one time)
 
 ```bash
-cd terraform/bootstrap
-cp terraform.tfvars.example terraform.tfvars
-# Edit state_bucket_name to a globally unique value
-terraform init
-terraform apply
+make bootstrap
 ```
 
-Copy the `backend_config` output into the `backend "s3"` block in `terraform/versions.tf` (uses `use_lockfile = true` instead of DynamoDB), then:
+A random hex suffix is appended to the state bucket prefix. `make bootstrap` writes gitignored `terraform/backend.hcl`, then:
 
 ```bash
-cd ../
-terraform init
+cd terraform
+terraform init -backend-config=backend.hcl
 ```
 
 ### 2. Build Lambda packages
@@ -66,17 +63,15 @@ make test
 ### 3. Deploy
 
 ```bash
-cd terraform
-cp terraform.tfvars.example terraform.tfvars
-terraform plan
-terraform apply
+cp terraform/terraform.tfvars.example terraform/terraform.tfvars
+make apply
 ```
 
 Note the `app_url` output — that is your public shortener URL.
 
 ### 4. Try it
 
-**Browser:** open `app_url`, paste a URL, click Shorten.
+**Browser:** open `app_url`, paste a URL, click Shorten. The result panel shows the short link, click stats, and a QR code (with PNG download).
 
 **Terminal:**
 

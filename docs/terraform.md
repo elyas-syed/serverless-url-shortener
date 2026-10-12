@@ -7,7 +7,8 @@ terraform/
 ├── main.tf              # Root module wiring
 ├── variables.tf         # Input variables
 ├── outputs.tf           # Stack outputs
-├── versions.tf          # Providers and backend config
+├── versions.tf          # Providers and shared backend settings
+├── backend.hcl          # Local bucket name (gitignored; from bootstrap)
 ├── terraform.tfvars     # Local values (gitignored)
 ├── bootstrap/           # Separate state bucket stack
 └── modules/

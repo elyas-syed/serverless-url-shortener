@@ -12,14 +12,14 @@ terraform {
     }
   }
 
-  # Uncomment after running terraform/bootstrap.
-  # backend "s3" {
-  #   bucket         = "your-unique-url-shortener-tf-state-bucket"
-  #   key            = "url-shortener/terraform.tfstate"
-  #   region         = "us-east-1"
-  #   use_lockfile   = true
-  #   encrypt        = true
-  # }
+  # Bucket name comes from gitignored backend.hcl after bootstrap.
+  # terraform init -backend-config=backend.hcl
+  backend "s3" {
+    key          = "url-shortener/terraform.tfstate"
+    region       = "us-east-1"
+    use_lockfile = true
+    encrypt      = true
+  }
 }
 
 provider "aws" {
