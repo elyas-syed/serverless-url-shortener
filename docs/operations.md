@@ -108,15 +108,15 @@ Run `make build` first. Terraform expects `dist/*.zip` at plan time for `source_
 Destroy the **app stack** first:
 
 ```bash
-make destroy
+make infra-destroy
 ```
 
 Then destroy the bootstrap state bucket (separate stack):
 
 ```bash
-make infra-destroy
+make bootstrap-destroy
 ```
 
-You must type `destroy-infra` to confirm. Do not run `make bootstrap destroy` — Make treats that as two targets (`bootstrap` then app `destroy`), not bootstrap teardown.
+You must type `destroy-bootstrap` to confirm. Use the hyphenated target — `make bootstrap destroy` is not a valid single target (Make would try `bootstrap` then a non-existent `destroy`).
 
 Order matters: if you delete the state bucket while the app stack still uses it for remote state, you can lose Terraform state and leave orphaned AWS resources.

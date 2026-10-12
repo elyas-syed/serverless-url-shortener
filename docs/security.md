@@ -84,7 +84,7 @@ Bootstrap bucket configuration:
 - Globally unique name via `random_id` hex suffix (no account ID in repo)
 - Bucket name kept in gitignored `backend.hcl`, not in tracked Terraform
 - Noncurrent versions expire after 90 days
-- Teardown via `make infra-destroy` (enables `force_destroy`; destroy the app stack first)
+- Teardown via `make bootstrap-destroy` (enables `force_destroy`; run `make infra-destroy` on the app stack first)
 
 ## Optional controls (off by default)
 

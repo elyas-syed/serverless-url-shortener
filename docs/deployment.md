@@ -32,7 +32,7 @@ Manual equivalent: apply `terraform/bootstrap`, copy `backend.hcl.example` → `
 
 See [Design notes](architecture.md#design-notes) in the architecture doc for why native lockfile is used.
 
-**Note:** Changing the bootstrap naming scheme replaces the state bucket. Prefer greenfield bootstrap or `make infra-destroy` (after `make destroy`) before recreating.
+**Note:** Changing the bootstrap naming scheme replaces the state bucket. Prefer greenfield bootstrap or `make bootstrap-destroy` (after `make infra-destroy`) before recreating.
 
 ## Deploy the application
 

@@ -1,4 +1,4 @@
-.PHONY: build test validate plan apply destroy bootstrap infra-destroy clean serve
+.PHONY: build test validate plan apply infra-destroy bootstrap bootstrap-destroy clean serve
 
 ROOT := $(CURDIR)
 
@@ -14,14 +14,14 @@ bootstrap:
 		echo "Wrote terraform/backend.hcl (gitignored)." && \
 		echo "Next: cd terraform && terraform init -backend-config=backend.hcl"
 
-infra-destroy:
+bootstrap-destroy:
 	@echo ""
-	@echo "WARNING: Destroy the app stack FIRST (make destroy)."
+	@echo "WARNING: Destroy the app stack FIRST (make infra-destroy)."
 	@echo "If the app stack still uses this bucket for remote state, you will lose"
 	@echo "Terraform state and may leave orphaned AWS resources."
 	@echo "This deletes the bootstrap state bucket and its contents."
 	@echo ""
-	@printf "Type 'destroy-infra' to continue: " && read confirm && [ "$$confirm" = "destroy-infra" ]
+	@printf "Type 'destroy-bootstrap' to continue: " && read confirm && [ "$$confirm" = "destroy-bootstrap" ]
 	cd $(ROOT)/terraform/bootstrap && terraform init
 	cd $(ROOT)/terraform/bootstrap && terraform apply -var='force_destroy=true' -auto-approve -target=aws_s3_bucket.terraform_state
 	cd $(ROOT)/terraform/bootstrap && terraform destroy -var='force_destroy=true'
@@ -53,9 +53,9 @@ plan: build
 apply: build
 	cd terraform && terraform apply
 
-destroy:
+infra-destroy:
 	@echo "This will destroy the app stack (CloudFront, Lambda, DynamoDB, etc)."
-	@echo "Bootstrap state bucket is not included."
+	@echo "Bootstrap state bucket is not included — use make bootstrap-destroy for that."
 	cd terraform && terraform destroy
 
 clean:

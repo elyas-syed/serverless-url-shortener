@@ -6,7 +6,7 @@
 - `make`, `zip`
 - Terraform >= 1.10 (for `validate` / `plan` targets)
 
-AWS credentials are only required for `terraform apply`, `make apply` / `make destroy`, bootstrap targets, and live integration testing.
+AWS credentials are only required for `terraform apply`, `make apply` / `make infra-destroy`, bootstrap targets, and live integration testing.
 
 ## Project layout
 
@@ -41,12 +41,12 @@ terraform/
 | `make validate` | Build + `terraform validate` (no remote backend) |
 | `make plan` | Build + `terraform plan` (no remote backend) |
 | `make apply` | Build + interactive `terraform apply` (app stack) |
-| `make destroy` | Interactive destroy of the **app** stack only |
+| `make infra-destroy` | Interactive destroy of the **app** stack only |
 | `make bootstrap` | Create state bucket; write gitignored `backend.hcl` |
-| `make infra-destroy` | Destroy bootstrap state bucket (app stack must be gone first) |
+| `make bootstrap-destroy` | Destroy bootstrap state bucket (app stack must be gone first) |
 | `make clean` | Remove `dist/`, caches |
 
-**Naming note:** Teardown of the state bucket is `make infra-destroy` (not `make bootstrap destroy`, which would run `bootstrap` then app `destroy`).
+**Naming note:** Use `make bootstrap-destroy` (hyphen) for the state bucket. `make bootstrap destroy` is invalid now that app teardown is `make infra-destroy` — prefer the hyphenated target.
 
 ### Build process
 

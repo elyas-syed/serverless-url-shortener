@@ -11,7 +11,7 @@ variable "state_bucket_prefix" {
 }
 
 variable "force_destroy" {
-  description = "Allow Terraform to delete the state bucket even if it still contains objects. Used by make infra-destroy."
+  description = "Allow Terraform to delete the state bucket even if it still contains objects. Used by make bootstrap-destroy."
   type        = bool
   default     = false
 }
